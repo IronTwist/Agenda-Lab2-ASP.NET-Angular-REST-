@@ -29,6 +29,15 @@ namespace AgendaLaborator2.Controllers
             return await _context.Tasks.ToListAsync();
         }
 
+        
+        [HttpGet]
+        [Route("filter/startDate={startDate:datetime}&endDate={endDate:datetime}")]
+        public async Task<ActionResult<IEnumerable<Task>>> FilterByTaskDeadline(DateTime startDate, DateTime endDate)
+        {
+            
+            return await _context.Tasks.Where(task => startDate < task.DateTimeDeadline && task.DateTimeDeadline < endDate).ToListAsync();
+        }
+
         // GET: api/Tasks/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Task>> GetTask(int id)
