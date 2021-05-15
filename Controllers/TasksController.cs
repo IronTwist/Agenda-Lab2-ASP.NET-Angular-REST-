@@ -29,13 +29,33 @@ namespace AgendaLaborator2.Controllers
             return await _context.Tasks.ToListAsync();
         }
 
-        
+
         [HttpGet]
         [Route("filter/startDate={startDate:datetime}&endDate={endDate:datetime}")]
         public async Task<ActionResult<IEnumerable<Task>>> FilterByTaskDeadline(DateTime startDate, DateTime endDate)
         {
-            
+
             return await _context.Tasks.Where(task => startDate < task.DateTimeDeadline && task.DateTimeDeadline < endDate).ToListAsync();
+        }
+
+        [HttpGet("{id}/Comments")]
+        public ActionResult<IEnumerable<Comment>> GetCommentForTask(int id)
+        {
+            return _context.Comments.Where(comm => comm.Task.Id == id).ToList();
+        }
+
+        [HttpPost("{id}/Comments")]
+        public IActionResult PostCommentForTask(int id, Comment comment)
+        {
+            comment.Task = _context.Tasks.Find(id);
+            if(comment.Task == null)
+            {
+                return NotFound();
+            }
+            _context.Comments.Add(comment);
+            _context.SaveChanges();
+
+            return Ok();
         }
 
         // GET: api/Tasks/5
