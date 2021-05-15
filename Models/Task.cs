@@ -30,5 +30,7 @@ namespace AgendaLaborator2.Models
         //open, in progress, closed
         public string State { get; set; }
         public DateTime DateTimeClosedAt { get; set; }
+
+        public List<Comment> Comments { get; set; }
     }
 }
